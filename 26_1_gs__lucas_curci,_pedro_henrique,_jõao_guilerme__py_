@@ -1,0 +1,165 @@
+"""26.1.GS.<LUCAS CURCI, PEDRO HENRIQUE, JÕAO GUILERME>.py."""
+
+# Criamos Listas de armazenamento
+tipos_eventos = []
+paises = []
+regioes = []
+cidades = []
+areas_afetadas = []
+intensidades = []
+ocorrencias = []
+
+
+# 1. ENTRADA DE DADOS
+
+while True:
+    try:
+        quantidade = int(input("Insira a quantidade de eventos: "))
+        if quantidade > 0:
+            break
+        else:
+            print("A quantidade deve ser maior que zero. Tente novamente.")
+    except ValueError:
+        print("Entrada inválida. Digite um número inteiro.")
+
+# Coleta os dados de cada evento
+for i in range(quantidade):
+    print(f"\n--- Evento {i + 1} ---")
+
+    # Tipo de evento
+    tipo = input("Tipo: ")
+    tipos_eventos.append(tipo)
+
+    # País
+    pais = input("País: ")
+    paises.append(pais)
+
+    # Região
+    regiao = input("Região: ")
+    regioes.append(regiao)
+
+    # Cidade
+    cidade = input("Cidade: ")
+    cidades.append(cidade)
+
+    # Área afetada
+    while True:
+        try:
+            area = float(input("Área (km²): "))
+            if area > 0:
+                areas_afetadas.append(area)
+                break
+            else:
+                print("A área deve ser maior que zero. Tente novamente.")
+        except ValueError:
+            print("Entrada inválida. Digite um número.")
+
+    # Intensidade
+    while True:
+        try:
+            intensidade = int(input("Intensidade (1 a 10): "))
+            if 1 <= intensidade <= 10:
+                intensidades.append(intensidade)
+                break
+            else:
+                print("A intensidade deve estar entre 1 e 10. Tente novamente.")
+        except ValueError:
+            print("Entrada inválida. Digite um número inteiro.")
+
+    # Número de ocorrências
+    while True:
+        try:
+            ocorrencia = int(input("Ocorrências: "))
+            if ocorrencia > 0:
+                ocorrencias.append(ocorrencia)
+                break
+            else:
+                print("O número de ocorrências deve ser maior que zero.")
+        except ValueError:
+            print("Entrada inválida. Digite um número inteiro.")
+
+
+# 2. ANÁLISE DE DADOS
+
+
+# Total de eventos registrados
+total_eventos = len(tipos_eventos)
+
+# Soma total das áreas afetadas
+soma_areas = 0
+for area in areas_afetadas:
+    soma_areas += area
+
+# Média das intensidades
+soma_intensidades = 0
+for intensidade in intensidades:
+    soma_intensidades += intensidade
+media_intensidades = soma_intensidades / total_eventos
+
+# Evento com maior área afetada
+maior_area = max(areas_afetadas)
+indice_maior_area = areas_afetadas.index(maior_area)
+
+# Região com maior número de ocorrências
+maior_ocorrencia = max(ocorrencias)
+indice_maior_ocorrencia = ocorrencias.index(maior_ocorrencia)
+regiao_mais_ocorrencias = regioes[indice_maior_ocorrencia]
+
+# Densidade média (ocorrências ÷ área)
+soma_densidade = 0
+for j in range(total_eventos):
+    soma_densidade += ocorrencias[j] / areas_afetadas[j]
+densidade_media = soma_densidade / total_eventos
+
+# Quantidade de eventos acima da média de intensidade
+eventos_acima_media = 0
+for intensidade in intensidades:
+    if intensidade > media_intensidades:
+        eventos_acima_media += 1
+
+# Evento mais crítico
+maior_intensidade = max(intensidades)
+# Encontra todos os índices com a maior intensidade
+indices_criticos = []
+for j in range(total_eventos):
+    if intensidades[j] == maior_intensidade:
+        indices_criticos.append(j)
+
+# Dentre os de maior intensidade, escolhe o de maior área
+indice_critico = indices_criticos[0]
+for j in indices_criticos:
+    if areas_afetadas[j] > areas_afetadas[indice_critico]:
+        indice_critico = j
+
+# 3. RELATÓRIO DE RESULTADOS
+
+print("\n========================================")
+print("        RELATÓRIO DE ANÁLISE")
+print("========================================")
+
+print(f"\nTotal de eventos registrados: {total_eventos}")
+
+print("\n----------------------------------------")
+print("Resumo Geral")
+print("----------------------------------------")
+print(f"Área total afetada: {soma_areas:.0f} km²")
+print(f"Média de intensidade: {media_intensidades:.1f}")
+
+print("\n----------------------------------------")
+print("Análises")
+print("----------------------------------------")
+print(f"Região com maior número de ocorrências: {regiao_mais_ocorrencias}")
+print(f"Quantidade de eventos acima da média de intensidade: {eventos_acima_media}")
+print(f"Densidade média de ocorrências: {densidade_media:.4f} ocorrências/km²") # Changed from :.2f to :.4f
+
+print("\n----------------------------------------")
+print("Evento Mais Crítico")
+print("----------------------------------------")
+print(f"Tipo: {tipos_eventos[indice_critico]}")
+print(f"Local: {cidades[indice_critico]}, {regioes[indice_critico]}, {paises[indice_critico]}")
+print(f"Intensidade: {intensidades[indice_critico]}")
+print(f"Área afetada: {areas_afetadas[indice_critico]:.0f} km²")
+
+print("\n========================================")
+print(f"Total de desastres registrados: {total_eventos}")
+print("========================================")
